@@ -77,12 +77,12 @@ config-view: layout/flags compose [
 
 v: layout compose [
 	size 1200x400
-	text "Folder:" 40x25 ff: field 800x25 pf: field 50x25 react later [face/text: mold pager/page] total: text " / N" 80x25
+	text "Folder:" 40x25 ff: field 800x25 pf: field 50x25 react later [face/text: mold pager/page] total: text " / N" 80x25 react later [face/text: rejoin [" / " calc-total repo/len pager/max]]
 	return
 	button "load" [unless empty? ff/text [
 			repo: make-repo ff/text
 			total/text: rejoin [" / " calc-total repo/len pager/max]
-			pager/page: either any [none? pf/text (scan pf/text) <> integer!][1][to-integer pf/text]
+			pager/page: either all [not none? pf/text (scan pf/text) = integer!][to-integer pf/text][1]
 			face/parent/selected: none
 		]
 	]
