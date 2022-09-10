@@ -56,7 +56,7 @@ set-pager-value: func [pager [object!] config [map!] word [word!]][
 ; -------------------------------------
 
 config: make-config pager
-config-view: view/no-wait/flags compose [
+config-view: layout/flags compose [
 	size 200x200
 	area (mold config) on-change [if all [
 			not error? config: attempt [load face/text]
