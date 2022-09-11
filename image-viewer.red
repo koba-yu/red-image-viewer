@@ -43,7 +43,7 @@ make-repo: func [path [string!] /local folders folder file base-folder img-files
 	make map! compose/only [base-folder: (base-folder) img-files: (img-files) len: (len)]
 ]
 
-calc-current: func [page [integer!] page-max [integer!]][page + ((page - 1) * page-max)]
+calc-current: func [page [integer!] page-max [integer!]][((page - 1) * page-max) + 1]
 calc-total: func [len [integer!] page-max [integer!]][to-integer round/ceiling len / page-max]
 
 make-config: func [pager [object!]][make map! compose [max: (pager/max) column: (pager/column)]]
@@ -103,7 +103,7 @@ v: layout compose [
 	button "next" [go-next pager] react later [face/enabled?: pager/page <> calc-total repo/len pager/max]
 	return
 	text "First file: " text 400x25 loose react later [set-filename face calc-current pager/page pager/max repo/base-folder]
-	text "Last file: " text 400x25 loose react later [set-filename face min repo/len (calc-current pager/page pager/max) + pager/max repo/base-folder]
+	text "Last file: " text 400x25 loose react later [set-filename face min repo/len (calc-current pager/page pager/max) + pager/max - 1 repo/base-folder]
 	return
 	img-area: panel 800x800 [] react later [
 		blk: copy [space 50x50]
