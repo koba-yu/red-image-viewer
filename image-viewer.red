@@ -108,7 +108,7 @@ v: layout compose [
 	text "First file: " text 400x25 loose react later [set-filename face calc-current pager/page pager/max repo/base-folder]
 	text "Last file: " text 400x25 loose react later [set-filename face min repo/len (calc-current pager/page pager/max) + pager/max - 1 repo/base-folder]
 	return
-	img-area: panel 800x800 [] react later [
+	img-area: panel 800x800 [] loose react later [
 		blk: copy [space 50x50]
 		repeat i pager/max [
 			page: ((pager/page - 1) * pager/max) + i
@@ -123,11 +123,11 @@ v: layout compose [
 			if (i % pager/column) = 0 [append blk 'return]
 		]
 		face/pane: layout/tight/only blk
+		face/size: sum collect [foreach f face/pane [keep f/size]]
 	]
 ]
 
 v/actors: context [
-	on-resize: func [face event][img-area/size: v/size - 5x5]
 	on-key: func [face event][
 		if none? face/selected [
 			switch event/key [
