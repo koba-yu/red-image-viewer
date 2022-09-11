@@ -72,6 +72,16 @@ config-view: layout/flags compose [
 ]['resize]
 
 ; -------------------------------------
+; File Name View
+; -------------------------------------
+
+name-view: layout/flags [
+	size 450x50
+	button "copy" [write-clipboard fnt/text]
+	fnt: text "" 400x25
+]['resize]
+
+; -------------------------------------
 ; Main View
 ; -------------------------------------
 
@@ -87,6 +97,7 @@ v: layout compose [
 		]
 	]
 	button "config" [show config-view]
+	button "name check" [show name-view]
 	return
 	button "prev" [go-back pager] react [face/enabled?: pager/page <> 1]
 	button "next" [go-next pager] react later [face/enabled?: pager/page <> calc-total repo/len pager/max]
@@ -100,7 +111,10 @@ v: layout compose [
 			page: ((pager/page - 1) * pager/max) + i
 			if repo/len < page [break]
 
-			append blk compose [image (load repo/img-files/:page) loose]
+			append blk compose [image (load repo/img-files/:page) loose extra (repo/img-files/:page) on-over [
+					fnt/text: replace mold copy face/extra repo/base-folder ""
+				]
+			]
 
 			if (i % pager/column) = 0 [append blk 'return]
 		]
